@@ -10,7 +10,7 @@ import { useCart } from "../../../context/CartProvider";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { initializeApp, getApps } from "firebase/app";
 
-// Your Firebase config
+// Firebase config
 const firebaseConfig = {
   apiKey: "AIzaSyBncpf8PPEHrCBcztoQVf_8fDh5SDTNE1s",
   authDomain: "resina-website.firebaseapp.com",
@@ -21,9 +21,8 @@ const firebaseConfig = {
   measurementId: "G-74QTMJTCPJ"
 };
 
-// ✅ Safe Initialization — prevent duplicate app error
+// Initialize Firebase
 const app = getApps().length === 0 ? initializeApp(firebaseConfig) : getApps()[0];
-
 const auth = getAuth(app);
 
 // Types
@@ -37,11 +36,16 @@ interface Product {
   description?: string;
 }
 
-type ProductDetailsProps = {
-  params: { id: string };
-};
+interface PageProps {
+  params: {
+    id: string;
+  };
+  searchParams?: {
+    [key: string]: string | string[] | undefined;
+  };
+}
 
-export default function ProductDetails({ params }: ProductDetailsProps) {
+export default function ProductDetails({ params }: PageProps) {
   const productId = parseInt(params.id, 10);
   const product = products.find((p) => p.id === productId);
 
