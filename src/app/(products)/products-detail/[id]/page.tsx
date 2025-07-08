@@ -36,14 +36,12 @@ interface Product {
   description?: string;
 }
 
-// Minimal props type that will work with Next.js
-type PageProps = {
+export default function ProductDetails({
+  params
+}: {
   params: { id: string };
-  searchParams?: { [key: string]: string | string[] | undefined };
-};
-
-
-export default function ProductDetails({ params }: PageProps) {
+  searchParams?: Record<string, string | string[] | undefined>;
+}) {
   const productId = parseInt(params.id, 10);
   const product = products.find((p) => p.id === productId);
 
