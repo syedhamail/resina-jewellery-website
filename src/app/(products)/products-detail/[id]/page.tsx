@@ -37,11 +37,11 @@ interface Product {
   description?: string;
 }
 
-// type ProductDetailsProps = {
-//   params: { id: string };
-// };
+type ProductDetailsProps = {
+  params: { id: string };
+};
 
-export default function ProductDetails({ params }: { params: { id: string } }) {
+export default function ProductDetails({ params }: ProductDetailsProps) {
   const productId = parseInt(params.id, 10);
   const product = products.find((p) => p.id === productId);
 
