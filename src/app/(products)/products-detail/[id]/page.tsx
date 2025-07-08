@@ -25,23 +25,7 @@ const firebaseConfig = {
 const app = getApps().length === 0 ? initializeApp(firebaseConfig) : getApps()[0];
 const auth = getAuth(app);
 
-// Types
-interface Product {
-  id: number;
-  category: string;
-  name: string;
-  price: number;
-  image: string[];
-  hoverImage: string;
-  description?: string;
-}
-
-export default function ProductDetails({
-  params
-}: {
-  params: { id: string };
-  searchParams?: Record<string, string | string[] | undefined>;
-}) {
+export default function ProductDetails({ params }: { params: { id: string } }) {
   const productId = parseInt(params.id, 10);
   const product = products.find((p) => p.id === productId);
 

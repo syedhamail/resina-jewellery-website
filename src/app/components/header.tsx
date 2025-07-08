@@ -151,9 +151,9 @@ export default function Header() {
               >
                 <MdShoppingCart className="text-black w-[20px] h-[20px]" />
                 {cart.length > 0 && (
-                  <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
+                  <div className="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
                     {cart.length}
-                  </span>
+                  </div>
                 )}
               </span>
               {isLoggedIn ? (
