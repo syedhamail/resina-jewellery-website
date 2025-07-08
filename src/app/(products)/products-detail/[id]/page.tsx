@@ -25,13 +25,7 @@ const firebaseConfig = {
 const app = getApps().length === 0 ? initializeApp(firebaseConfig) : getApps()[0];
 const auth = getAuth(app);
 
-// Minimal type definition that works with Next.js 15
-type PageProps = {
-  params: { id: string };
-  searchParams?: Record<string, string | string[] | undefined>;
-};
-
-export default function Page({ params }: PageProps) {
+export default function Page({ params }: { params: { id: string } }) {
   const productId = parseInt(params.id, 10);
   const product = products.find((p) => p.id === productId);
 
