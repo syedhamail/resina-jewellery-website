@@ -25,13 +25,8 @@ const firebaseConfig = {
 const app = getApps().length === 0 ? initializeApp(firebaseConfig) : getApps()[0];
 const auth = getAuth(app);
 
-// This is the key fix - using the correct type definition
-type PageProps = {
-  params: { id: string };
-  searchParams?: Record<string, string | string[] | undefined>;
-};
-
-export default function Page({ params }: PageProps) {
+// This is the key fix that will work
+export default async function Page({ params }: { params: { id: string } }) {
   const productId = parseInt(params.id, 10);
   const product = products.find((p) => p.id === productId);
 
