@@ -2,11 +2,11 @@
 
 import Image from "next/image";
 import { notFound } from "next/navigation";
+import products from "../../../data/products";
 import Header from "@/app/components/header";
 import Footer from "@/app/components/footer";
 import React, { useState, useEffect } from "react";
 import { useCart } from "../../../context/CartProvider";
-import products from "../../../data/products";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { initializeApp, getApps } from "firebase/app";
 
@@ -21,31 +21,30 @@ const firebaseConfig = {
   measurementId: "G-74QTMJTCPJ",
 };
 
-// Initialize Firebase safely
+// Initialize Firebase
 const app = getApps().length === 0 ? initializeApp(firebaseConfig) : getApps()[0];
 const auth = getAuth(app);
 
-export default function ProductDetailsPage({ params }: { params: { id: string } }) {
+interface PageProps {
+  params: {
+    id: string;
+  };
+}
+
+export default function ProductDetailsPage({ params }: PageProps) {
   const productId = parseInt(params.id, 10);
   const product = products.find((p) => p.id === productId);
 
-  // All hooks must come before any return
+  if (!product || isNaN(productId)) {
+    notFound();
+  }
+
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [notification, setNotification] = useState<string | null>(null);
+
   const { addToCart } = useCart();
-
-  useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
-      setIsLoggedIn(!!user);
-      setIsLoading(false);
-    });
-    return () => unsubscribe();
-  }, []);
-
-  // Show not found after all hooks
-  if (!product) return notFound();
 
   const handleNextImage = () => {
     setCurrentImageIndex((prev) => (prev + 1) % product.image.length);
@@ -54,6 +53,14 @@ export default function ProductDetailsPage({ params }: { params: { id: string } 
   const handlePrevImage = () => {
     setCurrentImageIndex((prev) => (prev - 1 + product.image.length) % product.image.length);
   };
+
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      setIsLoggedIn(!!user);
+      setIsLoading(false);
+    });
+    return () => unsubscribe();
+  }, []);
 
   const handleAddToCart = () => {
     if (isLoading) return;
@@ -79,6 +86,7 @@ export default function ProductDetailsPage({ params }: { params: { id: string } 
   return (
     <main className="bg-[#FAF3EB]">
       <Header />
+
       <section className="text-gray-600 body-font mb-10">
         <div className="container px-5 py-24 mx-auto">
           <div className="flex flex-col md:flex-row -m-4">
