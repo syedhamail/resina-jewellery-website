@@ -25,7 +25,9 @@ const firebaseConfig = {
 const app = getApps().length === 0 ? initializeApp(firebaseConfig) : getApps()[0];
 const auth = getAuth(app);
 
-export default function ProductDetailsPage({ params }: { params: { id: string } }) {
+export default function ProductDetailsPage(props: any) {
+  // Type assertion to extract params
+  const { params } = props as { params: { id: string } };
   const productId = parseInt(params.id, 10);
   const product = products.find((p) => p.id === productId);
 
